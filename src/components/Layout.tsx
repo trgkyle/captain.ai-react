@@ -83,18 +83,32 @@ const Layout: React.FC = () => {
   };
 
   const handleLoadImages = async () => {
-    const dogsList = await getDogsAPI(amount);
-    const newCards = dogsList;
-    if (selectedCards.length > 0) {
-      const selectedIndices = selectedCards.map((card) => cards.indexOf(card));
-      const updatedCards = [...cards];
-      selectedIndices.forEach((index, i) => {
-        updatedCards[index] = newCards[i];
-      });
-      setCards(updatedCards);
-    } else {
-      setCards([...cards, ...newCards]);
+    const dogsList: any[] = await getDogsAPI(amount);
+
+    const currentCards = [...cards];
+    const currentSelectedCards = [...selectedCards];
+
+    // loop check selected card to replace element select from dogsList
+    for (let i = 0; i < selectedCards.length; i++) {
+      // found index number of selected card in cards list
+      const cardSelectedFoundInCardsIndex = cards.indexOf(selectedCards[i]);
+
+      // make sure dogsList not empty to replace element and selected element found in cards list
+      if (dogsList.length > 0 && cardSelectedFoundInCardsIndex !== -1) {
+        // replace selected element to new element from dogsList
+        currentCards[cardSelectedFoundInCardsIndex] = dogsList[0];
+        dogsList.shift();
+
+        // remove selected element
+        const selectedCardIndex = currentSelectedCards.indexOf(
+          selectedCards[i]
+        );
+        currentSelectedCards.slice(selectedCardIndex, 1);
+      }
     }
+
+    setCards([...currentCards.concat(dogsList)]);
+    setSelectedCards(currentSelectedCards);
   };
 
   const handleClearImages = () => {
