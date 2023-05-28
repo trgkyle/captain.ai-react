@@ -8,6 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { getDogsAPI } from "../apis/getDogs";
 
 const Container = styled(Grid)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -58,27 +59,17 @@ const Layout: React.FC = () => {
   };
 
   const handleLoadImages = async () => {
-    try {
-      const response = await fetch(
-        `https://dog.ceo/api/breeds/image/random/${amount}`
-      );
-      const data = await response.json();
-
-      const newCards = data.message;
-      if (selectedCards.length > 0) {
-        const selectedIndices = selectedCards.map((card) =>
-          cards.indexOf(card)
-        );
-        const updatedCards = [...cards];
-        selectedIndices.forEach((index, i) => {
-          updatedCards[index] = newCards[i];
-        });
-        setCards(updatedCards);
-      } else {
-        setCards([...cards, ...newCards]);
-      }
-    } catch (error: any) {
-      console.error("Error loading images:", error);
+    const dogsList = await getDogsAPI(amount);
+    const newCards = dogsList;
+    if (selectedCards.length > 0) {
+      const selectedIndices = selectedCards.map((card) => cards.indexOf(card));
+      const updatedCards = [...cards];
+      selectedIndices.forEach((index, i) => {
+        updatedCards[index] = newCards[i];
+      });
+      setCards(updatedCards);
+    } else {
+      setCards([...cards, ...newCards]);
     }
   };
 
