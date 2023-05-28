@@ -8,6 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { getDogsAPI } from "../apis/getDogs";
 
 const Container = styled(Grid)(({ theme }) => ({
@@ -18,16 +19,16 @@ const Header = styled(Grid)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-const Body = styled(Grid)(({ theme }) => ({
-  marginBottom: theme.spacing(2),
-}));
-
 const HorizontalBarContainer = styled(Grid)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
 const HorizontalBar = styled(Divider)(({ theme }) => ({
   width: "100%",
+}));
+
+const Body = styled(Grid)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
 }));
 
 const ImageCard = styled(Card)(({ theme }) => ({
@@ -40,12 +41,35 @@ const ImageCard = styled(Card)(({ theme }) => ({
   cursor: "pointer",
   backgroundColor: "lightgray",
   transition: "background-color 0.3s ease",
+  position: "relative",
+  "&.selected:after": {
+    content: '""',
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#41BCFF",
+    opacity: 0.7,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1,
+  },
 }));
 
 const StyledImage = styled("img")({
   width: "100%",
   height: "100%",
   objectFit: "cover",
+});
+
+const CheckIconContainer = styled("div")({
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  zIndex: 2,
 });
 
 const Layout: React.FC = () => {
@@ -131,14 +155,17 @@ const Layout: React.FC = () => {
           <Grid item key={card}>
             <ImageCard
               onClick={() => handleCardClick(card)}
-              style={{
-                backgroundColor: selectedCards.includes(card)
-                  ? "lightblue"
-                  : "lightgray",
-              }}
+              className={selectedCards.includes(card) ? "selected" : ""}
             >
               <CardContent>
                 <StyledImage src={card} alt="dog" />
+                {selectedCards.includes(card) && (
+                  <CheckIconContainer>
+                    <CheckCircleIcon
+                      style={{ color: "#1565C0", fontSize: 64 }}
+                    />
+                  </CheckIconContainer>
+                )}
               </CardContent>
             </ImageCard>
           </Grid>
