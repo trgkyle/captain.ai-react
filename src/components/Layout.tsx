@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import {
   Button,
   Card,
@@ -126,40 +126,43 @@ const Layout: React.FC = () => {
     }
   };
 
+  const handleOnSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    handleLoadImages();
+  };
+
   return (
     <Container container>
-      <Header container alignItems="center">
-        <Grid item sx={{ ml: 1 }}>
-          <TextField
-            type="number"
-            label="Amount"
-            variant="outlined"
-            value={amount}
-            onChange={handleAmountChange}
-            size="small"
-            inputProps={{ min: 1 }}
-          />
-        </Grid>
-        <Grid item sx={{ ml: 2 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleLoadImages}
-          >
-            LOAD 🐶
-          </Button>
-        </Grid>
-        <Grid item sx={{ ml: 2 }}>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={handleClearImages}
-          >
-            CLEAR
-          </Button>
-        </Grid>
-      </Header>
-
+      <form onSubmit={handleOnSubmit}>
+        <Header container alignItems="center">
+          <Grid item sx={{ ml: 1 }}>
+            <TextField
+              type="number"
+              label="Amount"
+              variant="outlined"
+              value={amount}
+              onChange={handleAmountChange}
+              size="small"
+              required
+              inputProps={{ min: 1 }}
+            />
+          </Grid>
+          <Grid item sx={{ ml: 2 }}>
+            <Button variant="contained" color="primary" type="submit">
+              LOAD 🐶
+            </Button>
+          </Grid>
+          <Grid item sx={{ ml: 2 }}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={handleClearImages}
+            >
+              CLEAR
+            </Button>
+          </Grid>
+        </Header>
+      </form>
       <HorizontalBarContainer container>
         <HorizontalBar sx={{ ml: 1 }} />
       </HorizontalBarContainer>
