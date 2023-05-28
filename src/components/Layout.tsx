@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardContent,
+  CircularProgress,
   Divider,
   Grid,
   TextField,
@@ -74,6 +75,7 @@ const CheckIconContainer = styled("div")({
 
 const Layout: React.FC = () => {
   const [amount, setAmount] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cards, setCards] = useState<string[]>([]);
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
 
@@ -83,6 +85,7 @@ const Layout: React.FC = () => {
   };
 
   const handleLoadImages = async () => {
+    setIsLoading(true);
     const dogsList: any[] = await getDogsAPI(amount);
 
     const currentCards = [...cards];
@@ -109,6 +112,7 @@ const Layout: React.FC = () => {
 
     setCards([...currentCards.concat(dogsList)]);
     setSelectedCards(currentSelectedCards);
+    setIsLoading(false);
   };
 
   const handleClearImages = () => {
@@ -161,6 +165,12 @@ const Layout: React.FC = () => {
               CLEAR
             </Button>
           </Grid>
+
+          {isLoading ? (
+            <Grid item sx={{ ml: 2 }}>
+              <CircularProgress size={35} />
+            </Grid>
+          ) : null}
         </Header>
       </form>
       <HorizontalBarContainer container>
@@ -178,9 +188,15 @@ const Layout: React.FC = () => {
                 <StyledImage src={card} alt="dog" />
                 {selectedCards.includes(card) && (
                   <CheckIconContainer>
-                    <CheckCircleIcon
-                      style={{ color: "#1565C0", fontSize: 64 }}
-                    />
+                    {!isLoading ? (
+                      <CheckCircleIcon
+                        style={{ color: "#1565C0", fontSize: 64 }}
+                      />
+                    ) : (
+                      <CircularProgress
+                        style={{ color: "#1565C0", fontSize: 64 }}
+                      />
+                    )}
                   </CheckIconContainer>
                 )}
               </CardContent>
