@@ -132,7 +132,7 @@ const Layout: React.FC = () => {
       </Header>
 
       <HorizontalBarContainer container>
-        <HorizontalBar />
+        <HorizontalBar sx={{ ml: 1 }} />
       </HorizontalBarContainer>
 
       <Body container>
