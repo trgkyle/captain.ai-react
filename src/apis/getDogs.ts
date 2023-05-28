@@ -1,7 +1,9 @@
+const dogCeoApiURL = "https://dog.ceo/api";
+
 export async function getDogsAPI(amount: number) {
   try {
     const response = await fetch(
-      `https://dog.ceo/api/breeds/image/random/${amount}`
+      `${dogCeoApiURL}/breeds/image/random/${amount}`
     );
     const data = await response.json();
     return data.message;
