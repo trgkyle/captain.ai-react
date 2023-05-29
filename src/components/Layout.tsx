@@ -179,8 +179,8 @@ const Layout: React.FC = () => {
       </HorizontalBarContainer>
 
       <Body container>
-        {cards.map((card, index) => (
-          <Grid item key={index}>
+        {cards.map((card) => (
+          <Grid item key={card.id}>
             <ImageCard
               onClick={() => handleCardClick(card)}
               className={selectedCards.includes(card) ? "selected" : ""}
