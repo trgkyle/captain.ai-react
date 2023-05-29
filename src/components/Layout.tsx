@@ -11,6 +11,7 @@ import {
 import { styled } from "@mui/material/styles";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { getDogsAPI } from "../apis/getDogs";
+import { DogType } from "../interfaces";
 
 const Container = styled(Grid)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -76,8 +77,8 @@ const CheckIconContainer = styled("div")({
 const Layout: React.FC = () => {
   const [amount, setAmount] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [cards, setCards] = useState<string[]>([]);
-  const [selectedCards, setSelectedCards] = useState<string[]>([]);
+  const [cards, setCards] = useState<DogType[]>([]);
+  const [selectedCards, setSelectedCards] = useState<DogType[]>([]);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newAmount = parseInt(event.target.value);
@@ -120,7 +121,7 @@ const Layout: React.FC = () => {
     setSelectedCards([]);
   };
 
-  const handleCardClick = (card: string) => {
+  const handleCardClick = (card: DogType) => {
     if (selectedCards.includes(card)) {
       setSelectedCards(
         selectedCards.filter((selectedCard) => selectedCard !== card)
@@ -179,13 +180,13 @@ const Layout: React.FC = () => {
 
       <Body container>
         {cards.map((card) => (
-          <Grid item key={card}>
+          <Grid item key={card.id}>
             <ImageCard
               onClick={() => handleCardClick(card)}
               className={selectedCards.includes(card) ? "selected" : ""}
             >
               <CardContent>
-                <StyledImage src={card} alt="dog" />
+                <StyledImage src={card.url} alt="dog" />
                 {selectedCards.includes(card) && (
                   <CheckIconContainer>
                     {!isLoading ? (
